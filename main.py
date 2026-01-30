@@ -14,7 +14,7 @@ class Window(arcade.Window):
         
         self.sprites = arcade.SpriteList()
 
-        self.goos = [Goo(randint(0, self.width), randint(0, self.height), 10, 25) for _ in range(50)]
+        self.goos = []
 
         for goo in self.goos:
             self.sprites.append(goo)
@@ -34,7 +34,14 @@ class Window(arcade.Window):
         for goo in self.goos:
             goo.move()
         self.sprites.update()
-
+        
+        
+    def on_mouse_press(self, x, y, button, key_modifiers):
+        if button == arcade.MOUSE_BUTTON_LEFT:
+            g = Goo(x, y, 10, 25)
+            self.goos.append(g)
+            self.sprites.append(g)
+            
 def main():
     pass
 
