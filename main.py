@@ -19,10 +19,13 @@ class Window(arcade.Window):
         for goo in self.goos:
             self.sprites.append(goo)
 
-        self.start = Solid(randint(50, self.width - 50),
-                           randint(50, self.height - 50))
-        self.end = Solid(randint(50, self.width - 50),
-                         randint(50, self.height - 50))
+        self.start = Solid(randint(50, self.width - 50), randint(50, self.height - 50))
+
+        while True:
+            self.end = Solid(randint(50, self.width - 50), randint(50, self.height - 50))
+            if not self.end.collides_with(self.start):
+                break
+
 
         self.sprites.append(self.start)
         self.sprites.append(self.end)

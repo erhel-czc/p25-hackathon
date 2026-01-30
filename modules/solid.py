@@ -1,7 +1,6 @@
 import numpy as np
 import arcade
 from random import randint, choice
-from PIL import Image, ImageDraw
 
 
 class Solid(arcade.Sprite):
@@ -32,3 +31,12 @@ class Solid(arcade.Sprite):
                 arcade.color.DARK_BLUE,
                 outer_alpha=255
             )
+
+    #pour que le départ et l'arrivée ne se superposent pas 
+    def collides_with(self, other):
+        dx = self.center_x - other.center_x
+        dy = self.center_y - other.center_y
+        distance = (dx**2 + dy**2) ** 0.5
+
+        min_distance = (self.width + other.width) / 2
+        return distance < min_distance
