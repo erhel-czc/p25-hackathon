@@ -1,6 +1,6 @@
 import numpy as np
 import arcade
-from random import choice
+from random import randint, choice
 
 
 class Solid(arcade.Sprite):
