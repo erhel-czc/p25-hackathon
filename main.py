@@ -21,7 +21,6 @@ class Window(arcade.Window):
                            randint(50, self.height - 50))
         self.solids.append(self.start)
 
-        # Création du point d'arrivée, non superposé
         while True:
             self.end = Solid(randint(50, self.width - 50),
                              randint(50, self.height - 50))
@@ -30,7 +29,7 @@ class Window(arcade.Window):
                 break
         self.solids.append(self.end)
 
-        # Ajouter les obstacles dans la SpriteList
+        # Add obstacles to the SpriteList
         for solid in self.solids:
             self.sprites.append(solid)
 
@@ -39,7 +38,7 @@ class Window(arcade.Window):
         self.sprites.draw()
 
     def on_update(self, delta_time):
-        # Déplacer les goos en tenant compte des collisions
+        # Move the goos while considering collisions
         for goo in self.goos:
             goo.move(self.solids)
         self.sprites.update()

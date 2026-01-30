@@ -6,6 +6,7 @@ k = 100
 dt = 1/60
 g = 9.81/20
 mass = 0.4
+damping = 0.98
 
 
 def convert_to_meters(value) -> float:
@@ -70,17 +71,14 @@ class Goo(arcade.SpriteCircle):
         else:
             dx, dy = self.distance_to(other)
 
-            # Convertir les distances en mètres
             dx_m = convert_to_meters(dx)
             dy_m = convert_to_meters(dy)
 
-            # Distance actuelle
             d = math.sqrt(dx_m**2 + dy_m**2)
 
-            # Distance au repos
             l0 = math.sqrt(l0x**2 + l0y**2)
 
-            if d < 1e-6:
+            if d < 1e-3:
                 return 0, 0
 
             delta = d - l0
@@ -114,6 +112,11 @@ class Goo(arcade.SpriteCircle):
 
         self.v_x += dt*F[0]/mass
         self.v_y += dt*F[1]/mass - dt*g
+
+        # add a damping factor to simulate energy loss
+        # to avoid perpetual motion (found on the internet)
+        self.v_x *= damping
+        self.v_y *= damping
 
         dx = convert_to_pixels(self.v_x*dt)
         dy = convert_to_pixels(self.v_y*dt)
