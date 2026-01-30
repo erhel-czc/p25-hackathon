@@ -24,7 +24,7 @@ class Goo(arcade.SpriteCircle):
     rest_lengths: dict[tuple["Goo", "Goo"], tuple[float, float]] = {}
 
     def __init__(self, init_x: int, init_y: int, size: int) -> None:
-        super().__init__(size, arcade.color.ARMY_GREEN)
+        super().__init__(size, arcade.color.WILD_STRAWBERRY)
         self.center_x = init_x
         self.center_y = init_y
 

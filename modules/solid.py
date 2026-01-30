@@ -18,11 +18,11 @@ class Solid(arcade.Sprite):
 
         if self.shape == "ellipse":
             diameter = min(self.width, self.height)
-            self.texture = arcade.make_circle_texture(diameter, arcade.color.DARK_GREEN)
+            self.texture = arcade.make_circle_texture(diameter, arcade.color.BUD_GREEN)
 
         elif self.shape == "rectangle":
             size = max(self.width, self.height)
-            self.texture = arcade.make_soft_square_texture(size, arcade.color.DARK_BLUE, outer_alpha=255)
+            self.texture = arcade.make_soft_square_texture(size, arcade.color.BUD_GREEN, outer_alpha=255)
            
     def _ellipse_hitbox(self, a, b, n_points=12):
         """Crée une hitbox approximative pour une ellipse"""
