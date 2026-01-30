@@ -35,8 +35,10 @@ class Goo(arcade.SpriteCircle):
         for other in Goo.goos:
             l0x = convert_to_meters(other.center_x - self.center_x)
             l0y = convert_to_meters(other.center_y - self.center_y)
-            
-            if math.sqrt(l0x**2 + l0y**2) < 0.2:
+
+            # Only create spring link if distance is less than 20 cm (0.2 m)
+            distance = math.sqrt(l0x**2 + l0y**2)
+            if distance < 0.2:
                 Goo.rest_lengths[(self, other)] = (l0x, l0y)
                 Goo.rest_lengths[(other, self)] = (-l0x, -l0y)
 
@@ -62,13 +64,16 @@ class Goo(arcade.SpriteCircle):
         l0x, l0y = Goo.rest_lengths.get((self, other), (0, 0))
 
         print(f'l0x: {l0x}, l0y: {l0y}')
+        if l0x == 0 and l0y == 0:
+            return 0, 0
 
-        dx, dy = self.distance_to(other)
+        else:
+            dx, dy = self.distance_to(other)
 
-        Fx = k*(dx - l0x)
-        Fy = k*(dy - l0y)
+            Fx = k*(dx - l0x)
+            Fy = k*(dy - l0y)
 
-        return Fx, Fy
+            return Fx, Fy
 
     def global_force(self):
         """
