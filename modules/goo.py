@@ -81,8 +81,3 @@ class Goo(arcade.SpriteCircle):
 
         self.center_x += self.v_x*dt
         self.center_y += self.v_y*dt
-
-    def compute_deltas(self):
-        other_goos = [goo for goo in Goo.goos if goo != self]
-
-        pass
