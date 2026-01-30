@@ -1,5 +1,5 @@
 import arcade
-from modules.goo import Goo
+from modules.goo import Goo, draw_links
 from random import randint
 from modules.solid import Solid
 
@@ -35,7 +35,7 @@ class Window(arcade.Window):
 
     def on_draw(self):
         self.clear()
-        Goo.draw_links()
+        draw_links()
         self.sprites.draw()
 
     def on_update(self, delta_time):

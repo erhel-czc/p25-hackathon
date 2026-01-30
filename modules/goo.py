@@ -47,20 +47,6 @@ class Goo(arcade.SpriteCircle):
 
         Goo.goos.append(self)
 
-    @staticmethod
-    def draw_links():
-        drawn_pairs = set()
-
-        for (goo1, goo2), _ in Goo.rest_lengths.items():
-            # create a unique key for the pair to avoid drawing twice
-            pair_key = tuple(sorted([id(goo1), id(goo2)]))
-
-            if pair_key not in drawn_pairs:
-                drawn_pairs.add(pair_key)
-                arcade.draw_line(goo1.center_x, goo1.center_y,
-                                 goo2.center_x, goo2.center_y,
-                                 arcade.color.DARK_GREEN, 2)
-
     def distance_to(self, other: "Goo") -> tuple[float, float]:
         dx = other.center_x - self.center_x
         dy = other.center_y - self.center_y
@@ -153,3 +139,18 @@ class Goo(arcade.SpriteCircle):
                     self.v_x = 0
                     self.v_y = 0
                     break
+
+
+def draw_links():
+    """Dessiner tous les liens (ressorts) entre les goos connectés."""
+    drawn_pairs = set()
+
+    for (goo1, goo2), _ in Goo.rest_lengths.items():
+        # create a unique key for the pair to avoid drawing twice
+        pair_key = tuple(sorted([id(goo1), id(goo2)]))
+
+        if pair_key not in drawn_pairs:
+            drawn_pairs.add(pair_key)
+            arcade.draw_line(goo1.center_x, goo1.center_y,
+                             goo2.center_x, goo2.center_y,
+                             arcade.color.DARK_GREEN, 2)
