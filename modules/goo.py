@@ -1,10 +1,18 @@
 import arcade
 import math
 
-k = 100
+k = 0.5  # should be 100
 dt = 0.1
-g = 0.5
+g = 9.81/20
 mass = 0.4
+
+
+def convert_to_meters(value) -> float:
+    return value / 1000
+
+
+def convert_to_pixels(value) -> float:
+    return int(value * 1000)
 
 
 class Goo(arcade.SpriteCircle):
@@ -25,8 +33,8 @@ class Goo(arcade.SpriteCircle):
         Goo.goos.append(self)
 
     def distance_to(self, other: "Goo") -> tuple[float, float]:
-        dx = other.center_x - self.center_x
-        dy = other.center_y - self.center_y
+        dx = convert_to_meters(other.center_x - self.center_x)
+        dy = convert_to_meters(other.center_y - self.center_y)
 
         return dx, dy
 
@@ -45,10 +53,13 @@ class Goo(arcade.SpriteCircle):
             The x and y components of the force from self to other.
         """
 
-        l0x = abs(self.initial_x - other.initial_x)
-        l0y = abs(self.initial_y - other.initial_y)
+        l0x = convert_to_meters(self.initial_x - other.initial_x)
+        l0y = convert_to_meters(self.initial_y - other.initial_y)
+
+        print(f'l0x: {l0x}, l0y: {l0y}')
 
         dx, dy = self.distance_to(other)
+
         Fx = -k*(dx - l0x)
         Fy = -k*(dy - l0y)
 
@@ -73,9 +84,10 @@ class Goo(arcade.SpriteCircle):
 
     def move(self) -> None:
         F = self.global_force()
+        F = 0.0, 0.0
 
         self.v_x += dt*F[0]/mass
         self.v_y += dt*(-mass*g + F[1])/mass
 
-        self.center_x += self.v_x*dt
-        self.center_y += self.v_y*dt
+        self.center_x += convert_to_pixels(self.v_x*dt)
+        self.center_y += convert_to_pixels(self.v_y*dt)
