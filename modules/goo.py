@@ -2,8 +2,6 @@ import arcade
 import math
 
 k = 100
-
-
 dt = 0.1
 g = 0.5
 mass = 0.4
@@ -47,12 +45,12 @@ class Goo(arcade.SpriteCircle):
             The x and y components of the force from self to other.
         """
 
-        l0 = math.sqrt((self.initial_x - other.initial_x)**2 +
-                       (self.initial_y - other.initial_y)**2)
+        l0x = abs(self.initial_x - other.initial_x)
+        l0y = abs(self.initial_y - other.initial_y)
 
         dx, dy = self.distance_to(other)
-        Fx = -k*(dx - l0)
-        Fy = -k*(dy - l0)
+        Fx = -k*(dx - l0x)
+        Fy = -k*(dy - l0y)
 
         return Fx, Fy
 
