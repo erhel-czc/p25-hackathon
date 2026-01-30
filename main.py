@@ -20,6 +20,7 @@ class Window(arcade.Window):
 
         self.start = Solid(randint(50, self.width - 50),
                            randint(50, self.height - 50))
+        self.solids.append(self.start)
 
         # Création du point d'arrivée, non superposé
         while True:

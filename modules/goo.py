@@ -7,9 +7,10 @@ dt = 1/60
 g = 9.81/20
 mass = 0.4
 
-# --- Fonctions de conversion ---
+
 def convert_to_meters(value) -> float:
     return value / 1000
+
 
 def convert_to_pixels(value) -> float:
     return int(value * 1000)
@@ -68,6 +69,9 @@ class Goo(arcade.SpriteCircle):
 
         else:
             dx, dy = self.distance_to(other)
+            
+            dx = convert_to_meters(dx)
+            dy = convert_to_meters(dy)
 
             Fx = k*(dx - l0x)
             Fy = k*(dy - l0y)
@@ -91,9 +95,8 @@ class Goo(arcade.SpriteCircle):
 
         return Fx_total, Fy_total
 
-    def move(self) -> None:
+    def move(self, solid_list: list | None = None) -> None:
         F = self.global_force()
-        F = 0.0, 0.0
 
         self.v_x += dt*F[0]/mass
         self.v_y += dt*F[1]/mass - dt*g
