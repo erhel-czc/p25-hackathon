@@ -1,7 +1,6 @@
 import numpy as np
 import arcade
-from random import randint, choice
-from PIL import Image, ImageDraw
+from random import choice
 
 
 class Solid(arcade.Sprite):
