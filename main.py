@@ -11,35 +11,35 @@ class Window(arcade.Window):
         self.setup()
 
     def setup(self):
-
         self.sprites = arcade.SpriteList()
-
         self.goos = []
 
-        for goo in self.goos:
-            self.sprites.append(goo)
+        # --- Liste des obstacles ---
+        self.solids = []
 
+        # Création du point de départ
         self.start = Solid(randint(50, self.width - 50), randint(50, self.height - 50))
+        self.solids.append(self.start)
 
+        # Création du point d'arrivée, non superposé
         while True:
             self.end = Solid(randint(50, self.width - 50), randint(50, self.height - 50))
             if not self.end.collides_with(self.start):
                 break
+        self.solids.append(self.end)
 
-
-        self.sprites.append(self.start)
-        self.sprites.append(self.end)
+        # Ajouter les obstacles dans la SpriteList
+        for solid in self.solids:
+            self.sprites.append(solid)
 
     def on_draw(self):
         self.clear()
         self.sprites.draw()
-        pass
 
     def on_update(self, delta_time):
+        # Déplacer les goos en tenant compte des collisions
         for goo in self.goos:
-            goo.move()
-            
-            print(f'pos goo {goo}: ({goo.center_x}, {goo.center_y})')
+            goo.move(self.solids)
         self.sprites.update()
 
     def on_mouse_press(self, x, y, button, modifiers):
