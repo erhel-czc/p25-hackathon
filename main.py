@@ -38,8 +38,7 @@ class Window(arcade.Window):
     def on_update(self, delta_time):
         for goo in self.goos:
             goo.move()
-
-            print(f'pos goo {goo}: ({goo.center_x}, {goo.center_y})')
+            
         self.sprites.update()
 
     def on_mouse_press(self, x, y, button, modifiers):

@@ -63,7 +63,6 @@ class Goo(arcade.SpriteCircle):
         # Get the stored rest length for this pair
         l0x, l0y = Goo.rest_lengths.get((self, other), (0, 0))
 
-        print(f'l0x: {l0x}, l0y: {l0y}')
         if l0x == 0 and l0y == 0:
             return 0, 0
 
