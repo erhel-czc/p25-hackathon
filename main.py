@@ -45,8 +45,10 @@ class Window(arcade.Window):
     def on_mouse_press(self, x, y, button, modifiers):
         if button == arcade.MOUSE_BUTTON_LEFT:
             g = Goo(x, y, 10)
-            self.goos.append(g)
-            self.sprites.append(g)
+            if not(arcade.check_for_collision(g, self.start) or arcade.check_for_collision(g, self.end)) :
+                g.start()
+                self.goos.append(g)
+                self.sprites.append(g)
 
 
 if __name__ == "__main__":
