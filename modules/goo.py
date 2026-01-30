@@ -4,9 +4,11 @@ import math
 k = 100
 
 
-dt=0.1
+dt = 0.1
 g = 0.5
-mass=0.4
+mass = 0.4
+
+
 class Goo(arcade.SpriteCircle):
     # store all goos created in a list called goos
     goos: list["Goo"] = []
@@ -72,20 +74,15 @@ class Goo(arcade.SpriteCircle):
         return Fx_total, Fy_total
 
     def move(self) -> None:
-        F = self.F()  
-        self.equa_diff(F)
+        F = self.global_force()
+
+        self.v_x += dt*F[0]/mass
+        self.v_y += dt*(-mass*g + F[1])/mass
+
+        self.center_x += self.v_x*dt
+        self.center_y += self.v_y*dt
 
     def compute_deltas(self):
         other_goos = [goo for goo in Goo.goos if goo != self]
 
-        pass
-
-    def F(self):
-        pass
-
-    def equa_diff(self,F):
-        self.v_x += dt*F[0]/mass
-        self.v_y += dt*(-mass*g + F[1])/mass
-        self.center_x += self.v_x*dt
-        self.center_y += self.v_y*dt 
         pass
