@@ -31,6 +31,7 @@ class Goo(arcade.SpriteCircle):
         self.v_x = 0
         self.v_y = 0
 
+    def start(self, other: "Goo") -> None:
         # Calculate and store rest lengths with all existing goos
         for other in Goo.goos:
             l0x = convert_to_meters(other.center_x - self.center_x)
