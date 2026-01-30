@@ -1,8 +1,8 @@
 import arcade
 import math
 
-k = 0.5  # should be 100
-dt = 0.1
+k = 100
+dt = 1/60
 g = 9.81/20
 mass = 0.4
 
@@ -18,17 +18,27 @@ def convert_to_pixels(value) -> float:
 class Goo(arcade.SpriteCircle):
     # store all goos created in a list called goos
     goos: list["Goo"] = []
+    # store rest lengths between pairs of goos: {(goo1, goo2): (l0x, l0y)}
+    rest_lengths: dict[tuple["Goo", "Goo"], tuple[float, float]] = {}
 
-    def __init__(self, init_x: int, init_y: int, size: int, mass: int) -> None:
+    def __init__(self, init_x: int, init_y: int, size: int) -> None:
         super().__init__(size, arcade.color.ARMY_GREEN)
         self.center_x = init_x
         self.center_y = init_y
-        self.mass = mass
 
         self.initial_x = init_x
         self.initial_y = init_y
         self.v_x = 0
         self.v_y = 0
+
+        # Calculate and store rest lengths with all existing goos
+        for other in Goo.goos:
+            l0x = convert_to_meters(other.center_x - self.center_x)
+            l0y = convert_to_meters(other.center_y - self.center_y)
+            
+            if math.sqrt(l0x**2 + l0y**2) < 0.2:
+                Goo.rest_lengths[(self, other)] = (l0x, l0y)
+                Goo.rest_lengths[(other, self)] = (-l0x, -l0y)
 
         Goo.goos.append(self)
 
@@ -42,26 +52,21 @@ class Goo(arcade.SpriteCircle):
         """
         Compute the force from self to other.
 
-        Parameters
-        ----------
-        other : Goo
-            The other goo from which the force is computed.
-
         Returns
         -------
         Fx, Fy : tuple[float, float]
             The x and y components of the force from self to other.
         """
 
-        l0x = convert_to_meters(self.initial_x - other.initial_x)
-        l0y = convert_to_meters(self.initial_y - other.initial_y)
+        # Get the stored rest length for this pair
+        l0x, l0y = Goo.rest_lengths.get((self, other), (0, 0))
 
         print(f'l0x: {l0x}, l0y: {l0y}')
 
         dx, dy = self.distance_to(other)
 
-        Fx = -k*(dx - l0x)
-        Fy = -k*(dy - l0y)
+        Fx = k*(dx - l0x)
+        Fy = k*(dy - l0y)
 
         return Fx, Fy
 
@@ -84,10 +89,9 @@ class Goo(arcade.SpriteCircle):
 
     def move(self) -> None:
         F = self.global_force()
-        F = 0.0, 0.0
 
         self.v_x += dt*F[0]/mass
-        self.v_y += dt*(-mass*g + F[1])/mass
+        self.v_y += dt*F[1]/mass - dt*g
 
         self.center_x += convert_to_pixels(self.v_x*dt)
         self.center_y += convert_to_pixels(self.v_y*dt)
