@@ -69,12 +69,26 @@ class Goo(arcade.SpriteCircle):
 
         else:
             dx, dy = self.distance_to(other)
-            
-            dx = convert_to_meters(dx)
-            dy = convert_to_meters(dy)
 
-            Fx = k*(dx - l0x)
-            Fy = k*(dy - l0y)
+            # Convertir les distances en mètres
+            dx_m = convert_to_meters(dx)
+            dy_m = convert_to_meters(dy)
+
+            # Distance actuelle
+            d = math.sqrt(dx_m**2 + dy_m**2)
+
+            # Distance au repos
+            l0 = math.sqrt(l0x**2 + l0y**2)
+
+            if d < 1e-6:
+                return 0, 0
+
+            delta = d - l0
+
+            F = k*delta
+
+            Fx = F*(dx_m / d)
+            Fy = F*(dy_m / d)
 
             return Fx, Fy
 
@@ -104,20 +118,14 @@ class Goo(arcade.SpriteCircle):
         dx = convert_to_pixels(self.v_x*dt)
         dy = convert_to_pixels(self.v_y*dt)
 
-        # --- Déplacement horizontal ---
+        self.center_y += dy
         self.center_x += dx
+
         if solid_list:
             for solid in solid_list:
                 if arcade.check_for_collision(self, solid):
                     self.center_x -= dx
-                    self.v_x = 0
-                    break
-
-        # --- Déplacement vertical ---
-        self.center_y += dy
-        if solid_list:
-            for solid in solid_list:
-                if arcade.check_for_collision(self, solid):
                     self.center_y -= dy
+                    self.v_x = 0
                     self.v_y = 0
                     break

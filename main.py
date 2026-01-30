@@ -15,7 +15,6 @@ class Window(arcade.Window):
         self.sprites = arcade.SpriteList()
         self.goos = []
 
-        # --- Liste des obstacles ---
         self.solids = []
 
         self.start = Solid(randint(50, self.width - 50),
