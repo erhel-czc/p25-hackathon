@@ -1,6 +1,8 @@
 import arcade
 from modules.goo import Goo
 from random import randint
+from modules.solid import Solid
+
 
 class Window(arcade.Window):
     def __init__(self, width: int = 800, height: int = 600, title: str = "Simulation"):
@@ -9,12 +11,19 @@ class Window(arcade.Window):
         self.setup()
 
     def setup(self):
+        
         self.sprites = arcade.SpriteList()
 
         self.goos = [Goo(randint(0, self.width), randint(0, self.height), 10, 25) for _ in range(50)]
 
         for goo in self.goos:
             self.sprites.append(goo)
+
+        self.start = Solid(randint(50, self.width - 50), randint(50, self.height - 50))
+        self.end = Solid(randint(50, self.width - 50), randint(50, self.height - 50))
+
+        self.sprites.append(self.start)
+        self.sprites.append(self.end)
 
     def on_draw(self):
         self.clear()
