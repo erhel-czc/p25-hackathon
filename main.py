@@ -15,6 +15,8 @@ class Window(arcade.Window):
         self.sprites = arcade.SpriteList()
         self.goos = []
         self.won = False
+        self.win_timer = 0.0  # Compteur pour la condition de victoire
+        self.win_duration = 3.0  # Durée requise en secondes
 
         self.solids = []
 
@@ -106,8 +108,14 @@ class Window(arcade.Window):
             goo.move(self.solids)
         self.sprites.update()
 
-        if not self.won and self.check_win_condition():
-            self.won = True
+        if not self.won:
+            # Check if any goo has reached the end platform
+            if self.check_win_condition():
+                self.win_timer += delta_time
+                if self.win_timer >= self.win_duration:
+                    self.won = True
+            else:
+                self.win_timer = 0.0
 
     def on_mouse_press(self, x, y, button, modifiers):
         if button == arcade.MOUSE_BUTTON_LEFT:
