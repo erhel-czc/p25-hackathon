@@ -5,7 +5,7 @@ class Goo(arcade.SpriteCircle):
     goos: list["Goo"] = []
 
     def __init__(self, init_x: int, init_y: int, size: int, mass: int) -> None:
-        super().__init__(size, arcade.color.BLUE)
+        super().__init__(size, arcade.color.ARMY_GREEN)
         self.center_x = init_x
         self.center_y = init_y
         self.mass = mass
