@@ -8,7 +8,7 @@ class Window(arcade.Window):
     def __init__(self, width: int = 800, height: int = 600,
                  title: str = "Goo Simulation"):
         super().__init__(width, height, title)
-        arcade.set_background_color(arcade.color.ASH_GREY)
+        arcade.set_background_color(arcade.color.BLEU_DE_FRANCE)
         self.setup()
 
     def setup(self):
