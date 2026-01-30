@@ -35,6 +35,7 @@ class Window(arcade.Window):
 
     def on_draw(self):
         self.clear()
+        Goo.draw_links()
         self.sprites.draw()
 
     def on_update(self, delta_time):

@@ -7,6 +7,7 @@ dt = 1/60
 g = 9.81/20
 mass = 0.4
 damping = 0.98
+max_velocity = 5.0
 
 
 def convert_to_meters(value) -> float:
@@ -45,6 +46,20 @@ class Goo(arcade.SpriteCircle):
                 Goo.rest_lengths[(other, self)] = (-l0x, -l0y)
 
         Goo.goos.append(self)
+
+    @staticmethod
+    def draw_links():
+        drawn_pairs = set()
+
+        for (goo1, goo2), _ in Goo.rest_lengths.items():
+            # create a unique key for the pair to avoid drawing twice
+            pair_key = tuple(sorted([id(goo1), id(goo2)]))
+
+            if pair_key not in drawn_pairs:
+                drawn_pairs.add(pair_key)
+                arcade.draw_line(goo1.center_x, goo1.center_y,
+                                 goo2.center_x, goo2.center_y,
+                                 arcade.color.DARK_GREEN, 2)
 
     def distance_to(self, other: "Goo") -> tuple[float, float]:
         dx = other.center_x - self.center_x
@@ -117,6 +132,12 @@ class Goo(arcade.SpriteCircle):
         # to avoid perpetual motion (found on the internet)
         self.v_x *= damping
         self.v_y *= damping
+
+        # Limiter les vitesses pour éviter la divergence
+        speed = math.sqrt(self.v_x**2 + self.v_y**2)
+        if speed > max_velocity:
+            self.v_x = (self.v_x / speed) * max_velocity
+            self.v_y = (self.v_y / speed) * max_velocity
 
         dx = convert_to_pixels(self.v_x*dt)
         dy = convert_to_pixels(self.v_y*dt)
